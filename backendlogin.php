@@ -13,15 +13,11 @@ require_once("config/DB.class.php");
 			$userData = json_decode($jsonUser);
 			$passData = json_decode($jsonPass);
 			
-			//var_dump($userData);
-			//var_dump($passData);
-			
 			
 			$dbUser = $userData->user;
 			$dbPass = $passData->pass;
 			
-			//var_dump($dbUser);
-			//var_dump($dbPass);
+			
 			
 			$db = new DB();
 			if(!$db->getConnStatus()){
@@ -43,10 +39,6 @@ require_once("config/DB.class.php");
 				if((password_verify($sanitizedPass,$result[0]['userpass'])) == 1)
 				{
 					
-					//$_SESSION['isLoggedIn'] = true;
-					//$_SESSION['realName'] = $result[0]['realname'];
-					//$_SESSION['role'] = $result[0]['rolename'];
-					//print json_encode($_SESSION);
 					print json_encode(array("isLoggedIn"=>true,
 									  "realName"=>$result[0]['realname'],
 									  "role"=>$result[0]['rolename']));
@@ -63,12 +55,12 @@ require_once("config/DB.class.php");
 		}
 		else
 		{
-			print "You must enter both a username and password";
+			print json_encode (array("result"=>"You must enter both a username and password"));
 		}
 	}
 	else
 	{
-		print "You must enter both a username and password";
+		print json_encode (array("result"=>"You must enter both a username and password"));
 	}
 
 ?>

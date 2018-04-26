@@ -62,9 +62,9 @@ if(isset($_POST['submit']))
 			
 
 			$return = curl_exec($ch);
-			//var_dump($return);
+			
 			$authObject = json_decode($return);
-			//var_dump($authObject);
+
 			if(!isset($authObject->result)){
 				$_SESSION['isLoggedIn'] = $authObject->isLoggedIn;
 				$_SESSION['realName'] = $authObject->realName;
@@ -75,8 +75,6 @@ if(isset($_POST['submit']))
 				curl_close($ch);
 				print $authObject->result;
 			}
-			//var_dump($_SESSION);
-			
 			
 
 		}
