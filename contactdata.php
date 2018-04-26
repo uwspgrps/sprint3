@@ -84,10 +84,10 @@ print "
 		print "User Table not found";
 	}
 	print "</div></main>
-		<footer>Sprint 2 Ken Lucas Peter</footer>
+		<footer>Sprint 3 Ken Lucas Peter</footer>
 		";
 	print $page->getBottomSection();
 }else{
-	exit("HTTP 404 NOT FOUND");
+	die(header("HTTP/1.0 404 Not Found"));
 }
 ?>

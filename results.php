@@ -90,7 +90,7 @@ if(isset($_POST['name'])){
 	print "Nothing was put in the search bar";
 }
 print "</div></main>
-	<footer>Sprint 2 Ken Lucas Peter</footer>
+	<footer>Sprint 3 Ken Lucas Peter</footer>
 	";
 print $page->getBottomSection();
 ?>

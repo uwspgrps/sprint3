@@ -49,7 +49,7 @@ print "
     </article>
   </section>
   </main>
-	<footer>Sprint 2 Ken Lucas Peter</footer>
+	<footer>Sprint 3 Ken Lucas Peter</footer>
 	";
 print $page->getBottomSection();
 ?>

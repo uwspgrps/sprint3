@@ -25,6 +25,7 @@ print "
 	</nav>
 </header>";
 
+
 if(isset($_POST['submit']))
 {
 	if(isset($_POST['name']) && isset($_POST['passwrd']))
@@ -33,40 +34,51 @@ if(isset($_POST['submit']))
 		{
 			$user = $_POST['name'];
 			$password = $_POST['passwrd'];
+			$userData = array("user" => $user);
+			$passData = array("pass" => $password);
+			$userJson = json_encode($userData);
+			$passJson = json_encode($passData);
+
+			$postString = "user=" . urlencode($userJson) . "&password=" . urlencode($passJson);
+			$contentLength = strlen($postString);
+
+			$header = array(
+			  'Content-Type: application/x-www-form-urlencoded',
+			  'Content-Length: ' . $contentLength
+			);
+
+			$url = "http://cnmtsrv2.uwsp.edu/~lmanc333/sprint3/backendlogin.php";
+
+			$ch = curl_init();
+
+			curl_setopt($ch,
+				CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch,
+				CURLOPT_POSTFIELDS, $postString);
+			curl_setopt($ch,
+				CURLOPT_HTTPHEADER, $header);
+			curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+			curl_setopt($ch,CURLOPT_URL,$url);
 			
-			$db = new DB();
-			if(!$db->getConnStatus()){
-				print "An error has occurred with connection\n";
-				exit;
+
+			$return = curl_exec($ch);
+			//var_dump($return);
+			$authObject = json_decode($return);
+			//var_dump($authObject);
+			if(!isset($authObject->result)){
+				$_SESSION['isLoggedIn'] = $authObject->isLoggedIn;
+				$_SESSION['realName'] = $authObject->realName;
+				$_SESSION['role'] = $authObject->role;
+				curl_close($ch);
+				header("Location: index.php");
+			}else{
+				curl_close($ch);
+				print $authObject->result;
 			}
+			//var_dump($_SESSION);
 			
-			$sanitizedUser = filter_var($user,FILTER_SANITIZE_STRING);
-			$sanitizedPass = filter_var($password,FILTER_SANITIZE_STRING);
-			$safeUser = $db->dbEsc($sanitizedUser);
 			
-			$query = "SELECT username,userpass,realname,rolename 
-					  FROM user, user2role, role
-					  WHERE user.id = user2role.userid AND user2role.roleid = role.id AND user.username = '{$safeUser}'";
-			
-			$result = $db->dbCall($query);
-			if(!count($result) == 0)
-			{
-				if((password_verify($sanitizedPass,$result[0]['userpass'])) == 1)
-				{
-					$_SESSION['isLoggedIn'] = true;
-					$_SESSION['realName'] = $result[0]['realname'];
-					$_SESSION['role'] = $result[0]['rolename'];
-					header("Location: index.php");
-				}
-				else
-				{
-					print "The username or password was incorrect, please try again.";
-				}
-			}
-			else
-			{
-				print "The username or password was incorrect, please try again."
-;			}
+
 		}
 		else
 		{
@@ -123,6 +135,6 @@ print
     </div>
   </aside>
   </main>
-  <footer>Sprint 2 Ken Lucas Peter</footer>";
+  <footer>Sprint 3 Ken Lucas Peter</footer>";
  print $page->getBottomSection();
 ?>

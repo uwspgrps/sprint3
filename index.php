@@ -7,7 +7,7 @@ $page->setBottomSection();
 print $page->getTopSection();
 print "
 <header>	
-	<h1>Home Page Sprint 2</h1>";
+	<h1>Home Page Sprint 3</h1>";
 if(isset($_SESSION['isLoggedIn'])){
 	if($_SESSION['isLoggedIn'] == true){
 		print "<h2 align='right'>Welcome " . $_SESSION['realName'] . "</h2>";
@@ -81,7 +81,7 @@ print "
     </div>
   </aside>
   </main>
-  <footer>Sprint 2 Ken Lucas Peter</footer>
+  <footer>Sprint 3 Ken Lucas Peter</footer>
   ";
 print $page->getBottomSection();
 ?>
